@@ -1,13 +1,12 @@
-// const MongoClient = require('mongodb').MongoClient;
-// const uri =
-//   'mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority';
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// connect = (callback) => {
-//   client.connect((err) => {
-//     if ()
-//     const collection = client.db('test').collection('devices');
-//     // perform actions on the collection object
-//     client.close();
-//   });
-// };
-// module.exports = connect;
+const { local_uri, remote_uri } = require('./config');
+const mongoose = require('mongoose');
+
+const uri = remote_uri;
+
+connect = (callback) => {
+  mongoose.connect(uri, { useNewUrlParser: true }, (err) => {
+    callback(err);
+  });
+};
+
+module.exports = connect;

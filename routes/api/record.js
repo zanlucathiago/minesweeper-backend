@@ -1,42 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Record = require('../../models/record');
-const mongoose = require('mongoose');
+const mongodb = require('../../mongodb');
 
-router.get('/', async (req, res) => {
-  console.log(req);
-  mongoose.connect(
-    'mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority',
-    { useNewUrlParser: true },
-    (err) => {
-      console.log('INSIDE MONGO');
-      if (err) {
-        console.error(err);
-      }
-      Record.find(req.query || {})
-        .populate('player')
-        // .populate('level')
-        .exec((err, populated) => {
-          if (err) {
-            res.status(400).send(err.message);
-          }
-          res.send(populated);
-        });
-    },
-  );
-  // .catch((err) => {
-  //   res.status(400).send(err.message);
-  // });
-  // res.send(data);
+router.get('/', async (req, res, next) => {
+  mongodb((err) => {
+    if (err) {
+      return res.status(400).send(err.message);
+    }
+    Record.find(req.query || {})
+      .populate('player')
+      .exec((err, populated) => {
+        if (err) {
+          return res.status(400).send(err.message);
+        }
+        res.send(populated);
+      });
+  });
 });
 
 router.post('/', (req, res) => {
   const record = req.body;
-  Record.create(record, (err, created) => {
+  mongodb((err) => {
     if (err) {
-      res.status(400).send(err.message);
+      return res.status(400).send(err.message);
     }
-    res.json(created);
+    Record.create(record, (err, created) => {
+      if (err) {
+        return res.status(400).send(err.message);
+      }
+      res.json(created);
+    });
   });
 });
 

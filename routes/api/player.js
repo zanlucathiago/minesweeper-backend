@@ -1,21 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const Player = require('../../models/player');
+const mongodb = require('../../mongodb');
 
-router.get('/', async (req, res) => {
-  const levels = await Player.find({}).catch((err) => {
-    res.status(400).send(err.message);
+router.get('/', (req, res) => {
+  mongodb(async (err) => {
+    if (err) {
+      return res.status(400).send(err.message);
+    }
+    const levels = await Player.find({}).catch((err) => {
+      return res.status(400).send(err.message);
+    });
+    res.send(levels);
   });
-  res.send(levels);
 });
 
 router.post('/', (req, res) => {
   const data = req.body;
-  Player.create(data, (err, created) => {
+  mongodb((err) => {
     if (err) {
-      res.status(400).send(err.message);
+      return res.status(400).send(err.message);
     }
-    res.json(created);
+    Player.create(data, (err, created) => {
+      if (err) {
+        return res.status(400).send(err.message);
+      }
+      res.json(created);
+    });
   });
 });
 

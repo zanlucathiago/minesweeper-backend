@@ -1,14 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const Player = require('../../models/player');
+const mongodb = require('../../mongodb');
 
 router.post('/', (req, res) => {
   const data = req.body;
-  Player.findOne(data, (err, found) => {
+  mongodb(async (err) => {
     if (err) {
-      res.send(err.message);
+      return res.status(400).send(err.message);
     }
-    res.json(found);
+    Player.findOne(data, (err, found) => {
+      if (err) {
+        return res.status(400).send(err.message);
+      }
+      if (!found) {
+        return res.status(401).send('Usuário ou senha inválidos.');
+      }
+      res.json(found);
+    });
   });
 });
 
