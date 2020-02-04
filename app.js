@@ -12,10 +12,10 @@ app.use(express.urlencoded({ extended: false }));
 Record = require('./models/record');
 Level = require('./models/level');
 
-mongoose.connect(
-  'mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority',
-  { useNewUrlParser: true },
-);
+// mongoose.connect(
+//   'mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority',
+//   { useNewUrlParser: true },
+// );
 
 // Members API Routes
 app.use('/api/record', require('./routes/api/record'));
