@@ -4,11 +4,15 @@ const Record = require('../../models/record');
 const mongoose = require('mongoose');
 
 router.get('/', async (req, res) => {
-  // console.log(req);
+  console.log(req);
   mongoose.connect(
     'mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority',
     { useNewUrlParser: true },
-    () => {
+    (err) => {
+      console.log('INSIDE MONGO');
+      if (err) {
+        console.error(err);
+      }
       Record.find(req.query || {})
         .populate('player')
         // .populate('level')
