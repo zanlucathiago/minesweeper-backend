@@ -18,7 +18,8 @@ const recordSchema = Schema({
   },
   level: {
     ref: 'Level',
-    type: Schema.Types.ObjectId,
+    // type: Schema.Types.ObjectId,
+    type: String,
     required: true,
   },
 });

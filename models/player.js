@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
   },
-  password: {
+  pin: {
     type: String,
     required: true,
   },
