@@ -33,7 +33,7 @@ router.post('/send', async (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       res.status(401).send(error);
-      return console.log(error);
+      return console.error(error);
     }
 
     res.send('Mensagem enviada!');

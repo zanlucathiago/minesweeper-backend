@@ -6,55 +6,64 @@ const _ = require('lodash');
 const moment = require('moment');
 
 router.delete('/', async (req, res) => {
-  mongodb(async (err) => {
-    if (err) {
-      return res.status(400).send(err.message);
-    }
-    await Record.deleteMany({}).catch((err) => {
-      return res.status(400).send(err.message);
-    });
+  // mongodb(async (err) => {
+  //   if (err) {
+  //     return res.status(400).send(err.message);
+  //   }
+  await Record.deleteMany({}).catch((err) => {
+    return res.status(400).send(err.message);
   });
+  // });
   res.send('Apagados!');
 });
 
-router.get('/', (req, res) => {
-  const { level, player, date, _id } = req.query;
-  mongodb((err) => {
-    if (err) {
+router.get('/', async (req, res) => {
+  const { level, player, _id } = req.query;
+  // mongodb(async (err) => {
+  //   if (err) {
+  //     return res.status(400).send(err.message);
+  //   }
+  const populated = await Record.find({
+    level,
+    // ...(date !== 'true'
+    //   ? { date: { $gte: moment().subtract(1, 'days') } }
+    //   : {}),
+    ...(player !== 'true' ? { player: _id } : {}),
+  })
+    // .sort({ performance: 1 })
+    .sort('-date')
+    // .limit(12)
+    .populate('player')
+    .exec()
+    .catch((err) => {
       return res.status(400).send(err.message);
+    });
+  const filtered = [];
+  // let currentPerformance = null;
+  populated.forEach((item, index) => {
+    // console.log()
+    const { performance } = item;
+    const [firstItem] = filtered;
+    if (!firstItem || performance <= firstItem.performance) {
+      filtered.unshift(item);
+      // currentPerformance = performance;
     }
-    Record.find({
-      level,
-      ...(date !== 'true'
-        ? { date: { $gte: moment().subtract(1, 'days') } }
-        : {}),
-      ...(player !== 'true' ? { player: _id } : {}),
-    })
-      .sort({ performance: 1 })
-      .limit(12)
-      .populate('player')
-      .exec((err, populated) => {
-        if (err) {
-          return res.status(400).send(err.message);
-        }
-        res.send(populated);
-      });
   });
+  res.send(filtered);
+  // });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const record = req.body;
-  mongodb((err) => {
-    if (err) {
-      return res.status(400).send(err.message);
-    }
-    Record.create(record, (err, created) => {
-      if (err) {
-        return res.status(400).send(err.message);
-      }
-      res.json(created);
-    });
+  // mongodb(async (err) => {
+  //   if (err) {
+  //     return res.status(400).send(err.message);
+  //   }
+  const created = await Record.create(record).catch((err) => {
+    return res.status(400).send(err.message);
   });
+  res.json(created);
+  // });
 });
 
 module.exports = router;
