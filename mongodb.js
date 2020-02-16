@@ -1,7 +1,8 @@
 const { local_uri, remote_uri } = require('./config');
 const mongoose = require('mongoose');
 
-const uri = process.env.NODE_ENV !== 'production' ? local_uri : remote_uri;
+// const uri = process.env.NODE_ENV !== 'production' ? local_uri : remote_uri;
+const uri = remote_uri;
 
 // connect = (callback) => {
 connect = () => {
