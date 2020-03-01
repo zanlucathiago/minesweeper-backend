@@ -14,9 +14,16 @@ const playerSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  dateCreated: {
     type: Date,
     default: Date.now,
+  },
+  lastUpdated: {
+    type: Date,
+    default: Date.now,
+  },
+  filename: {
+    type: String,
   },
 });
 

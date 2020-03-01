@@ -1,4 +1,4 @@
 {
-  "remote_uri": "mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority",
-  "local_uri": "mongodb://127.0.0.1/minesweeper"
+  "remoteURI": "mongodb+srv://zanlucathiago:Mkbm@@1401@minesweeper-epgan.gcp.mongodb.net/test?retryWrites=true&w=majority",
+  "localURI": "mongodb://127.0.0.1/minesweeper"
 }

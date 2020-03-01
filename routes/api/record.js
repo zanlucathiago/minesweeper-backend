@@ -1,9 +1,10 @@
 const express = require('express');
+
 const router = express.Router();
+// const _ = require('lodash');
+// const moment = require('moment');
 const Record = require('../../models/record');
-const mongodb = require('../../mongodb');
-const _ = require('lodash');
-const moment = require('moment');
+// const mongodb = require('../../mongodb');
 
 router.delete('/', async (req, res) => {
   // mongodb(async (err) => {
@@ -35,35 +36,29 @@ router.get('/', async (req, res) => {
     // .limit(12)
     .populate('player')
     .exec()
-    .catch((err) => {
-      return res.status(400).send(err.message);
-    });
+    .catch((err) => res.status(400).send(err.message));
   const filtered = [];
-  // let currentPerformance = null;
-  populated.forEach((item, index) => {
-    // console.log()
+
+  populated.forEach((item) => {
     const { performance } = item;
     const [firstItem] = filtered;
+
     if (!firstItem || performance <= firstItem.performance) {
       filtered.unshift(item);
-      // currentPerformance = performance;
     }
   });
+
   res.send(filtered);
-  // });
 });
 
 router.post('/', async (req, res) => {
   const record = req.body;
-  // mongodb(async (err) => {
-  //   if (err) {
-  //     return res.status(400).send(err.message);
-  //   }
-  const created = await Record.create(record).catch((err) => {
-    return res.status(400).send(err.message);
-  });
+
+  const created = await Record.create(record).catch((err) =>
+    res.status(400).send(err.message),
+  );
+
   res.json(created);
-  // });
 });
 
 module.exports = router;
