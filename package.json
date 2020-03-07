@@ -30,7 +30,10 @@
     "multer-gridfs-storage": "^4.0.2",
     "nodemailer": "^6.4.2",
     "path": "^0.12.7",
-    "sharp": "^0.24.1"
+    "request": "^2.88.2",
+    "sharp": "^0.24.1",
+    "useragent": "^2.3.0",
+    "yamlparser": "0.0.2"
   },
   "devDependencies": {
     "eslint": "^6.1.0",

@@ -1,10 +1,26 @@
 const express = require('express');
+const useragent = require('useragent');
 
+useragent(true);
 const router = express.Router();
 // const _ = require('lodash');
 // const moment = require('moment');
 const Record = require('../../models/record');
 // const mongodb = require('../../mongodb');
+
+const filterResults = (populated) => {
+  const filtered = [];
+
+  populated.forEach((item) => {
+    const { performance } = item;
+    const [firstItem] = filtered;
+
+    if (!firstItem || performance <= firstItem.performance) {
+      filtered.unshift(item);
+    }
+  });
+  return filtered;
+};
 
 router.delete('/', async (req, res) => {
   // mongodb(async (err) => {
@@ -19,40 +35,34 @@ router.delete('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const { level, player, _id } = req.query;
-  // mongodb(async (err) => {
-  //   if (err) {
-  //     return res.status(400).send(err.message);
-  //   }
-  const populated = await Record.find({
+  // const { level, player, _id } = req.query;
+  const { level, _id } = req.query;
+
+  const global = await Record.find({
     level,
-    // ...(date !== 'true'
-    //   ? { date: { $gte: moment().subtract(1, 'days') } }
-    //   : {}),
-    ...(player !== 'true' ? { player: _id } : {}),
+    // ...(player !== 'true' ? { player: _id } : {}),
   })
-    // .sort({ performance: 1 })
     .sort('-date')
-    // .limit(12)
     .populate('player')
     .exec()
     .catch((err) => res.status(400).send(err.message));
-  const filtered = [];
 
-  populated.forEach((item) => {
-    const { performance } = item;
-    const [firstItem] = filtered;
+  const personal = await Record.find({
+    level,
+    // ...(player !== 'true' ? { player: _id } : {}),
+    player: _id,
+  })
+    .sort('-date')
+    .populate('player')
+    .exec()
+    .catch((err) => res.status(400).send(err.message));
 
-    if (!firstItem || performance <= firstItem.performance) {
-      filtered.unshift(item);
-    }
-  });
-
-  res.send(filtered);
+  res.send([filterResults(global), filterResults(personal)]);
 });
 
 router.post('/', async (req, res) => {
   const record = req.body;
+  const agent = useragent.parse(req.headers['user-agent']);
 
   const created = await Record.create(record).catch((err) =>
     res.status(400).send(err.message),
