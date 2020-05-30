@@ -15,19 +15,4 @@ router.get('/', (req, res) => {
   });
 });
 
-// router.post('/', (req, res) => {
-//   const level = req.body;
-//   mongodb((err) => {
-//     if (err) {
-//       return res.status(400).send(err.message);
-//     }
-//     Level.create(level, (err, created) => {
-//       if (err) {
-//         return res.status(400).send(err.message);
-//       }
-//       res.json(created);
-//     });
-//   });
-// });
-
 module.exports = router;

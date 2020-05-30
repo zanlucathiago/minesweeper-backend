@@ -3,10 +3,11 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 
 router.post('/send', async (req, res) => {
+  console.log(req.body)
   const output = `
   <p>Você tem uma nova solicitação de contato</p>
   <h3>Detalhes do Contato</h3>
-  <ul>  
+  <ul>
     <li>Nome: ${req.body.name}</li>
     <li>E-mail: ${req.body.email}</li>
     <li>Telefone: ${req.body.phone}</li>

@@ -8,21 +8,13 @@ const path = require('path');
 const { localURI, remoteURI } = require('./config');
 
 const uri = process.env.NODE_ENV !== 'production' ? localURI : remoteURI;
-// const uri = remote_uri;
 
-// connect = (callback) => {
-// const connect = () => {
-// mongoose.connect(uri, { useNewUrlParser: true }, async (err) => {
 mongoose.connect(
   uri,
   { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true },
-  // await callback(err);
-  // mongoose.disconnect();
-  // });
 );
-// };
-let gfs;
 
+let gfs;
 const { connection } = mongoose;
 
 connection.once('open', () => {
@@ -85,6 +77,4 @@ module.exports = {
   read,
   remove,
   upload,
-  // storage,
 };
-// module.exports = connection;

@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/zanlucathiago/minesweeper-backend#readme",
   "dependencies": {
+    "@feathersjs/express": "^4.5.4",
+    "@feathersjs/feathers": "^4.5.3",
+    "@feathersjs/socketio": "^4.5.4",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
