@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-Level = require('../models/level');
+
 const { Schema } = mongoose;
 
 const recordSchema = Schema({
@@ -18,7 +18,6 @@ const recordSchema = Schema({
   },
   level: {
     ref: 'Level',
-    // type: Schema.Types.ObjectId,
     type: String,
     required: true,
   },

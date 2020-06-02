@@ -52,13 +52,12 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const record = req.body;
-  const agent = useragent.parse(req.headers['user-agent']);
 
-  const created = await Record.create(record).catch((err) =>
-    res.status(400).send(err.message),
-  );
+  for (r of Array.isArray(record) ? record : [record]) {
+    await Record.create(r).catch((err) => res.status(400).send(err.message));
+  }
 
-  res.json(created);
+  res.status(200).send('Recorde salvo.');
 });
 
 module.exports = router;
